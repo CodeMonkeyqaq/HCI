@@ -1,0 +1,13 @@
+<RCC>
+  <qresource prefix="background">
+    <file>C:/Users/user/Pictures/timg1.jpg</file>
+    <file>C:/Users/user/Pictures/bg.jpg</file>
+    <file>phone.png</file>
+    <file>play.gif</file>
+    <file>voice.gif</file>
+    <file>background.jpg</file>
+  </qresource>
+  <qresource prefix="newPrefix">
+    <file>C:/Users/user/Pictures/摄图网_500305545.jpg</file>
+  </qresource>
+</RCC>

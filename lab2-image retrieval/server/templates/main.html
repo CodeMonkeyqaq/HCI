@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>Image Search Engine</title>
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+		<meta http-equiv='cache-control' content="no-cache, must-revalidate, post-check=0, pre-check=0">
+		<meta http-equiv='expires' content='0'>
+		<meta http-equiv='pragma' content='no-cache'>
+		<meta name="Keywords" content="image search" />
+		<meta charset="UTF-8" />
+		<meta name="Description" content="Website for searching image --Homework of HCI" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="author" content="1652977_wxz" />
+		<link rel="shortcut icon" href="images/favicon.ico" />
+		<script src="http://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+		<script src="http://ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+
+	</head>
+
+	<body style="background-image: url(images/webBackGround.jpg);">
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="navbar-inner">
+				<div class="container">
+					<div>
+						<ul class="nav nav-pills">
+							<li class="active">
+								<a href="/">Search</a>
+							</li>
+							<li>
+								<a href="animal">Dogs</a>
+							</li>
+							<li>
+								<a href="human">Human</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<div id="myCarousel" class="carousel slide" style="margin-top: -20px;">
+			<ol class="carousel-indicators">
+				<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				<li data-target="#myCarousel" data-slide-to="1"></li>
+				<li data-target="#myCarousel" data-slide-to="2"></li>
+			</ol>
+			<!-- Carousel items -->
+			<div class="carousel-inner">
+				<div class="active item"><img src="images/car.jpg" />
+					<div class="carousel-caption">
+						What's your car? Identify it
+					</div>
+				</div>
+
+				<div class="item"><img src="images/animal.jpg" />
+					<div class="carousel-caption">
+						What's this animal? Identify it
+					</div>
+				</div>
+				<div class="item"><img src="images/view.jpg" />
+					<div class="carousel-caption">
+						Where is it? Identify it
+					</div>
+				</div>
+				<div id="titleContent">
+					The mind knows what you see
+				</div>
+				<a href="#searchTable"><button type="button" id="searchButton" class="btn btn-default btn-lg">Search Image NOW</button></a>
+			</div>
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+			<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+		</div>
+		<div id="main" class="container">
+			<table class="table" id="searchTable" style="background: white;border: 1px solid beige;box-shadow: 3px 5px 15px 0px rgba(0, 0, 0, 0.2), 3px 5px 15px 0 rgba(0, 0, 0, 0.19);">
+				<tr style="background: lightgrey;">
+					<td><b>Choose your file to upload</b></td>
+					<td><b></b></td>
+				</tr>
+				<tr>
+					<td>
+						<form method=post enctype=multipart/form-data>
+							<input type="file" name="file" required />
+							<input type=submit value="Search!" onclick="fun()">
+						</form>
+					</td>
+					<td><b></b></td>
+				</tr>
+
+				<tr id="row1">
+					<td>
+						<a href=""><button id="clear" style="display:none;">Clear</button></a>
+					</td>
+					<td id="searchResult" style="display: none;">共查询到结果<b>{{ number }}</b>条。</td>
+
+				</tr>
+			</table>
+
+		</div>
+
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="tabbable">
+				<ul class="nav nav-tabs">
+					<li class="active">
+						<a href="#tab1" data-toggle="tab">all</a>
+					</li>
+					<li>
+						<a href="#tab2" onclick="pressAnimalTag()" data-toggle="tab">dog</a>
+					</li>
+					<li>
+						<a href="#tab3" onclick="pressHumanTag()" data-toggle="tab">human</a>
+					</li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab1">
+						<center>
+							<p class="notification">All results will be shown here</p>
+						</center>
+						<center>
+							<img id="load" src="images/ajax-loader.gif" style="height:100px;weight:100px;display:none;">
+						</center>
+						<div id="main" class="container">
+							<table id="table" class="table" style="background: white; border: 1px ;display:none;">
+								<tbody>
+									<tr>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img0" src="" alt="No result!" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img1" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img2" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+									</tr>
+									<tr style="background: white;">
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img3" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img4" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img5" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+									</tr>
+									<tr>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img6" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img7" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img8" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+					<div class="tab-pane" id="tab2">
+						<center>
+							<p class="notification">dogs results will be shown here</p>
+						</center>
+						<center>
+							<img id="load1" src="images/ajax-loader.gif" style="height:100px;weight:100px;display:none;">
+						</center>
+						<div id="main" class="container">
+							<table id="table1" class="table" style="background: white; border: 1px ;display:none;">
+								<tbody>
+									<tr>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img10" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img11" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img12" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+									</tr>
+									<tr style="background: white;">
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img13" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img14" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img15" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+									</tr>
+									<tr>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img16" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img17" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img18" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+					<div class="tab-pane" id="tab3">
+						<center>
+							<p class="notification">human results will be shown here</p>
+						</center>
+						<center>
+							<img id="load2" src="images/ajax-loader.gif" style="height:100px;weight:100px;display:none;">
+						</center>
+						<div id="main" class="container">
+							<table id="table2" class="table" style="background: white; border: 1px ;display:none;">
+								<tbody>
+									<tr>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img20" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img21" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img22" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+									</tr>
+									<tr style="background: white;">
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img23" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img24" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img25" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+									</tr>
+									<tr>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img26" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img27" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+										<td style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    border-left-width: 1px;
+    border-bottom-width: 1px;border-right-width: 1px;background: white;
+">
+											<img id="img28" src="" alt="Norway" style="
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 200px;
+    height: 200px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 0px;
+    padding-left: 5px;
+    border-left-width: 0px;
+    border-bottom-width: 0px;border-right-width: 0px;
+" width="200" height="200">
+
+										</td>
+									</tr>
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<script type="text/javascript">
+			function myFunction() {
+
+				//				document.getElementById("predictedResult").innerHTML = "";
+				$('#clear').hide();
+				$('#searchResult').hide();
+			}
+
+			function fun() {
+
+				$('#load').show();
+
+				$("form").submit(function(evt) {
+					//$('#loader-icon').show();
+
+					evt.preventDefault();
+
+					//$('#loader-icon').show();
+					var formData = new FormData($(this)[0]);
+
+					$.ajax({
+						url: 'imgUpload',
+						type: 'POST',
+						data: formData,
+						//async: false,
+						cache: false,
+						contentType: false,
+						enctype: 'multipart/form-data',
+						processData: false,
+
+						success: function(response) {
+							$('#load').hide();
+							$('#row1').show();
+							//console.log(response[1]);
+							//document.getElementById("predictedResult").innerHTML= response;
+							document.getElementById("img0").src = response.image0;
+							document.getElementById("img1").src = response.image1;
+							document.getElementById("img2").src = response.image2;
+							document.getElementById("img3").src = response.image3;
+							document.getElementById("img4").src = response.image4;
+							document.getElementById("img5").src = response.image5;
+							document.getElementById("img6").src = response.image6;
+							document.getElementById("img7").src = response.image7;
+							document.getElementById("img8").src = response.image8;
+							$('#table').show();
+							$('#clear').show();
+							$('#searchResult').show();
+						}
+					});
+					return false;
+				})
+			};
+
+			function pressAnimalTag() {
+				$('#load1').show();
+				console.log($("form"))
+
+				var formData = new FormData($('form')[0]);
+				$.ajax({
+					url: 'imgUpload1',
+					type: 'POST',
+					data: formData,
+					//async: false,
+					cache: false,
+					contentType: false,
+					enctype: 'multipart/form-data',
+					processData: false,
+
+					success: function(response) {
+						$('#load1').hide();
+						//console.log(response[1]);
+						//document.getElementById("predictedResult").innerHTML= response;
+
+						//						document.getElementById("img10").src = response.image0;
+						//						document.getElementById("img11").src = response.image1;
+						//						document.getElementById("img12").src = response.image2;
+						//						document.getElementById("img13").src = response.image3;
+						//						document.getElementById("img14").src = response.image4;
+						//						document.getElementById("img15").src = response.image5;
+						//						document.getElementById("img16").src = response.image6;
+						//						document.getElementById("img17").src = response.image7;
+						//						document.getElementById("img18").src = response.image8;
+
+						var num0 = response.image0.replace(/[^\d]/g, '');
+						var num1 = response.image1.replace(/[^\d]/g, '');
+						var num2 = response.image2.replace(/[^\d]/g, '');
+						var num3 = response.image3.replace(/[^\d]/g, '');
+						var num4 = response.image4.replace(/[^\d]/g, '');
+						var num5 = response.image5.replace(/[^\d]/g, '');
+						var num6 = response.image6.replace(/[^\d]/g, '');
+						var num7 = response.image7.replace(/[^\d]/g, '');
+						var num8 = response.image8.replace(/[^\d]/g, '');
+
+						var arrayA = [num0, num1, num2, num3, num4, num5, num6, num7, num8]
+
+						$.ajax({
+							url: 'checkAnimal',
+							type: 'POST',
+							async: false,
+							data: JSON.stringify({
+								arrayAA: arrayA
+							}),
+							contentType: "application/json; charset=utf-8",
+							dataType: "json",
+							success: function(res) {
+								console.log(res);
+								var a = res["result"];
+								a.forEach(ele => {
+									if(a.indexOf(ele) == 0) {
+										document.getElementById("img10").src = response.image0;
+									} else if(a.indexOf(ele) == 1) {
+										document.getElementById("img11").src = response.image1;
+									} else if(a.indexOf(ele) == 2) {
+										document.getElementById("img12").src = response.image2;
+									} else if(a.indexOf(ele) == 3) {
+										document.getElementById("img13").src = response.image3;
+									} else if(a.indexOf(ele) == 4) {
+										document.getElementById("img14").src = response.image4;
+									} else if(a.indexOf(ele) == 5) {
+										document.getElementById("img15").src = response.image5;
+									} else if(a.indexOf(ele) == 6) {
+										document.getElementById("img16").src = response.image6;
+									} else if(a.indexOf(ele) == 7) {
+										document.getElementById("img17").src = response.image7;
+									} else if(a.indexOf(ele) == 8) {
+										document.getElementById("img18").src = response.image8;
+									}
+
+								})
+							}
+						})
+
+						$('#table1').show();
+					}
+				});
+				return false;
+
+			};
+
+			function pressHumanTag() {
+				$('#load2').show();
+				console.log($("form"))
+
+				var formData = new FormData($('form')[0]);
+				$.ajax({
+					url: 'imgUpload2',
+					type: 'POST',
+					data: formData,
+					//async: false,
+					cache: false,
+					contentType: false,
+					enctype: 'multipart/form-data',
+					processData: false,
+
+					success: function(response) {
+						$('#load2').hide();
+						//console.log(response[1]);
+						//document.getElementById("predictedResult").innerHTML= response;
+						//						document.getElementById("img20").src = response.image0;
+						//						document.getElementById("img21").src = response.image1;
+						//						document.getElementById("img22").src = response.image2;
+						//						document.getElementById("img23").src = response.image3;
+						//						document.getElementById("img24").src = response.image4;
+						//						document.getElementById("img25").src = response.image5;
+						//						document.getElementById("img26").src = response.image6;
+						//						document.getElementById("img27").src = response.image7;
+						//						document.getElementById("img28").src = response.image8;
+						var num0 = response.image0.replace(/[^\d]/g, '');
+						var num1 = response.image1.replace(/[^\d]/g, '');
+						var num2 = response.image2.replace(/[^\d]/g, '');
+						var num3 = response.image3.replace(/[^\d]/g, '');
+						var num4 = response.image4.replace(/[^\d]/g, '');
+						var num5 = response.image5.replace(/[^\d]/g, '');
+						var num6 = response.image6.replace(/[^\d]/g, '');
+						var num7 = response.image7.replace(/[^\d]/g, '');
+						var num8 = response.image8.replace(/[^\d]/g, '');
+
+						var arrayA = [num0, num1, num2, num3, num4, num5, num6, num7, num8]
+
+						$.ajax({
+							url: 'checkHuman',
+							type: 'POST',
+							async: false,
+							data: JSON.stringify({
+								arrayAA: arrayA
+							}),
+							contentType: "application/json; charset=utf-8",
+							dataType: "json",
+							success: function(res) {
+								console.log(res);
+								var a = res["result"];
+								a.forEach(ele => {
+									if(a.indexOf(ele) == 0) {
+										document.getElementById("img20").src = response.image0;
+									} else if(a.indexOf(ele) == 1) {
+										document.getElementById("img21").src = response.image1;
+									} else if(a.indexOf(ele) == 2) {
+										document.getElementById("img22").src = response.image2;
+									} else if(a.indexOf(ele) == 3) {
+										document.getElementById("img23").src = response.image3;
+									} else if(a.indexOf(ele) == 4) {
+										document.getElementById("img24").src = response.image4;
+									} else if(a.indexOf(ele) == 5) {
+										document.getElementById("img25").src = response.image5;
+									} else if(a.indexOf(ele) == 6) {
+										document.getElementById("img26").src = response.image6;
+									} else if(a.indexOf(ele) == 7) {
+										document.getElementById("img27").src = response.image7;
+									} else if(a.indexOf(ele) == 8) {
+										document.getElementById("img28").src = response.image8;
+									}
+
+								})
+							}
+						})
+						$('#table2').show();
+					}
+				});
+				return false;
+			}
+		</script>
+	</body>
+	<style type="text/css">
+		#titleContent {
+			position: absolute;
+			z-index: 2;
+			top: 40%;
+			left: 50%;
+			-webkit-transform: translate(-50%, -100%);
+			-moz-transform: translate(-50%, -100%);
+			-ms-transform: translate(-50%, -100%);
+			-o-transform: translate(-50%, -100%);
+			transform: translate(-50%, -100%);
+			color: white;
+			font-family: "微软雅黑";
+			font-size: 30px;
+			text-align: center;
+		}
+		
+		.carousel-caption {
+			color: white;
+			font-size: 20px;
+		}
+		
+		#searchButton {
+			height: 100px;
+			position: absolute;
+			z-index: 2;
+			top: 60%;
+			left: 50%;
+			-webkit-transform: translate(-50%, -100%);
+			-moz-transform: translate(-50%, -100%);
+			-ms-transform: translate(-50%, -100%);
+			-o-transform: translate(-50%, -100%);
+			transform: translate(-50%, -100%);
+			color: black;
+			font-size: 40px;
+			font-family: arial;
+			font-weight: bold;
+		}
+		
+		.notification {
+			margin-top: 30px;
+		}
+	</style>
+
+</html>
